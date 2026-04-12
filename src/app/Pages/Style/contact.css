@@ -1,0 +1,105 @@
+.contact-card {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.03) 0%, 
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+}
+
+.contact-submit-btn {
+  background: white;
+  color: black;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.contact-submit-btn:hover {
+  background: #22d3ee;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+}
+
+/* Specific Tablet adjustments */
+@media (max-width: 768px) {
+  .contact-title {
+    font-size: 2.5rem;
+  }
+  .contact-card {
+    border-radius: 1.5rem;
+    padding: 2rem 1.5rem;
+  }
+}.contact-card {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.03) 0%, 
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+}
+
+.contact-submit-btn {
+  background: white;
+  color: black;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.contact-submit-btn:hover {
+  background: #22d3ee;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+}
+
+/* Specific Tablet adjustments */
+@media (max-width: 768px) {
+  .contact-title {
+    font-size: 2.5rem;
+  }
+  .contact-card {
+    border-radius: 1.5rem;
+    padding: 2rem 1.5rem;
+  }
+}

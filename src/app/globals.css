@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #f8fafc;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (pointer: fine) {
+  html, body, a, button, [role="button"] {
+    cursor: none !important;
+  }
+}
+
+body {
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+
+  /*  Premium cinematic background */
+  background:
+    radial-gradient(circle at 50% 30%, #021015 0%, #000000 60%),
+    #000;
+}

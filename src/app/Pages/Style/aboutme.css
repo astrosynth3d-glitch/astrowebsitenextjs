@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* Premium Liquid Glass Card – enhanced for depth & glow */
+.premium-liquid-card {
+  /* Deeper gradient for richer glass */
+  background: linear-gradient(
+    135deg,
+    rgba(20, 40, 55, 0.45) 0%,
+    rgba(10, 15, 30, 0.55) 100%
+  );
+  
+  /* Stronger blur + subtle noise (via backdrop-filter) */
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  
+  /* Multi‑layered borders – light catch on top/left, dark on bottom/right */
+  border-top: 1px solid rgba(120, 220, 240, 0.25);
+  border-left: 1px solid rgba(120, 220, 240, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  
+  /* Outer glow + inner highlight */
+  box-shadow: 
+    0 30px 50px -20px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(34, 211, 238, 0.1) inset,
+    0 2px 0 rgba(255, 255, 255, 0.05) inset;
+  
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* Hover effect: stronger glow and slight lift */
+.premium-liquid-card:hover {
+  box-shadow: 
+    0 40px 60px -20px rgba(0, 0, 0, 0.9),
+    0 0 0 2px rgba(34, 211, 238, 0.2) inset,
+    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  transform: translateY(-4px);
+}
+
+/* Optional: animated border shimmer (pseudo-element) */
+.premium-liquid-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(34, 211, 238, 0.3) 30%,
+    rgba(168, 85, 247, 0.3) 70%,
+    transparent 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.premium-liquid-card:hover::before {
+  opacity: 1;
+}
+
+/* Tool tag styling – glassy with glow on hover */
+.glass-tag {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  transition: all 0.25s ease;
+}
+
+.glass-tag:hover {
+  background: rgba(34, 211, 238, 0.12);
+  border-color: rgba(34, 211, 238, 0.6);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
+  transform: translateY(-2px);
+}
