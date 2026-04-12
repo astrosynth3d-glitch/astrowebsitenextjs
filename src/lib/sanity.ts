@@ -1,42 +1,47 @@
-import { createClient } from '@sanity/client';
+import { createClient } from "@sanity/client";
 
-// Environment variables
+// ✅ Environment variables
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01';
+const apiVersion =
+  process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-01-01";
 
-// ⚠️ Safer check (don’t crash build in production)
+// ❌ Fail early in development (better debugging)
 if (!projectId || !dataset) {
-  console.warn(
-    "⚠️ Missing Sanity environment variables. Check Netlify environment settings."
+  throw new Error(
+    "❌ Missing Sanity environment variables. Check Vercel settings."
   );
 }
 
-// Create Sanity client
+// ✅ Create Sanity client
 export const sanityClient = createClient({
-  projectId: projectId || '',
-  dataset: dataset || '',
+  projectId,
+  dataset,
   apiVersion,
-  useCdn: false, // ✅ IMPORTANT: disable CDN to fix missing data
+  useCdn: true, // 🚀 IMPORTANT: enable CDN for production
 });
 
-// Helper function for fetching data
+// ✅ Generic fetch helper with revalidation support
 export async function fetchSanityData<T>(
   query: string,
-  params: Record<string, unknown> = {}
+  params: Record<string, unknown> = {},
+  options: { revalidate?: number } = {}
 ): Promise<T | null> {
   try {
-    const data = await sanityClient.fetch(query, params);
+    const data = await sanityClient.fetch(query, params, {
+      next: {
+        revalidate: options.revalidate ?? 10, // ⏱ auto refresh every 10s
+      },
+    });
 
-    // ✅ Prevent UI from breaking if data is empty
     if (!data) {
-      console.warn("⚠️ Sanity returned empty data for query:", query);
+      console.warn("⚠️ Empty Sanity response:", query);
       return null;
     }
 
     return data;
   } catch (error) {
     console.error("❌ Sanity fetch error:", error);
-    return null; // ✅ don’t crash UI
+    return null;
   }
 }
