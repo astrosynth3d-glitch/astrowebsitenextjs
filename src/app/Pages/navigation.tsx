@@ -44,14 +44,13 @@ export default function Navigation() {
       transition: { 
         delay: i * 0.08, 
         duration: 0.4, 
-        ease: [0.23, 1, 0.32, 1] as const // Fix: assert as const tuple
+        ease: [0.23, 1, 0.32, 1] as const
       }
     })
   };
 
   return (
     <nav className={`nav-hero ${scrolled ? 'nav-scrolled' : ''}`}>
-      {/* Logo – Hero Scale */}
       <Link href="/#home" className="nav-logo-hero group" aria-label="Home">
         <div className="logo-icon-hero">
           <div className="logo-outer-hero">
@@ -63,7 +62,6 @@ export default function Navigation() {
         </span>
       </Link>
       
-      {/* Desktop Navigation – Hero Links */}
       <div className="nav-desktop-hero">
         {navLinks.map((link) => (
           <Link 
@@ -76,7 +74,6 @@ export default function Navigation() {
         ))}
       </div>
 
-      {/* Desktop Contact Button – Hero CTA */}
       <div className="nav-actions-hero">
         <Link 
           href="/#contact" 
@@ -86,7 +83,6 @@ export default function Navigation() {
           <span className="btn-shine-hero" aria-hidden="true" />
         </Link>
 
-        {/* Mobile Menu Toggle */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
           className="nav-toggle-hero"
@@ -99,7 +95,6 @@ export default function Navigation() {
         </button>
       </div>
 
-      {/* Mobile Menu Overlay – Hero Style */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 

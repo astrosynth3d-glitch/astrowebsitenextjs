@@ -1,20 +1,12 @@
-/* ROOT */
 .contact-root {
   position: relative;
   background: transparent;
 }
 
-/* =========================
-   PREMIUM APPLE‑STYLE LIQUID GLASS CARD
-========================= */
 .contact-card {
   position: relative;
   border-radius: 36px;
-
-  /* Deep, translucent base */
   background-color: rgba(10, 25, 35, 0.45);
-
-  /* Subtle cyan depth gradients */
   background-image:
     radial-gradient(140% 100% at 50% 0%,
       rgba(103, 232, 249, 0.08) 0%, transparent 55%),
@@ -23,25 +15,19 @@
     linear-gradient(180deg,
       rgba(6, 182, 212, 0.04) 0%,
       rgba(8, 145, 178, 0.02) 100%);
-
-  /* Strong backdrop blur for depth */
   backdrop-filter: blur(60px) saturate(200%);
   -webkit-backdrop-filter: blur(60px) saturate(200%);
-
-  /* Delicate border with inner glow */
   border: 1px solid rgba(103, 232, 249, 0.15);
   box-shadow:
     0 0 0 0.5px rgba(165, 243, 252, 0.1) inset,
     0 1px 2px rgba(255, 255, 255, 0.05) inset,
     0 20px 40px -12px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(6, 182, 212, 0.1);
-
   transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1),
               box-shadow 0.4s ease,
               border-color 0.4s ease;
 }
 
-/* Hover lift – Apple‑style subtle elevation */
 .contact-card:hover {
   transform: translateY(-3px);
   border-color: rgba(103, 232, 249, 0.25);
@@ -52,7 +38,6 @@
     0 0 0 1px rgba(6, 182, 212, 0.2);
 }
 
-/* Top highlight – essential for liquid glass */
 .contact-card::before {
   content: "";
   position: absolute;
@@ -66,9 +51,6 @@
   opacity: 1;
 }
 
-/* =========================
-   INPUTS – PREMIUM GLASS
-========================= */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -90,11 +72,9 @@
   width: 100%;
   padding: 14px 18px;
   border-radius: 18px;
-
   background: rgba(8, 20, 28, 0.45);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
   border: 1px solid rgba(103, 232, 249, 0.15);
   color: white;
   font-size: 1rem;
@@ -123,28 +103,22 @@
   letter-spacing: 0.02em;
 }
 
-/* =========================
-   BUTTON – PREMIUM GRADIENT
-========================= */
 .contact-submit-btn {
   width: 100%;
   padding: 18px 24px;
   border-radius: 40px;
   margin-top: 8px;
-
   background: linear-gradient(145deg, #22d3ee, #0ea5e9);
   color: #030712;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-size: 0.9rem;
-
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow:
     0 0 0 0.5px rgba(165, 243, 252, 0.3) inset,
     0 8px 20px rgba(34, 211, 238, 0.3),
     0 2px 6px rgba(0, 0, 0, 0.2);
-
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
@@ -166,7 +140,6 @@
     0 4px 12px rgba(34, 211, 238, 0.4);
 }
 
-/* Shine effect */
 .contact-submit-btn::after {
   content: "";
   position: absolute;
@@ -190,24 +163,18 @@
   box-shadow: none;
 }
 
-/* =========================
-   LINKTREE BUTTON – SUBTLE GLASS
-========================= */
 .glass-linktree {
   display: inline-flex;
   gap: 10px;
   padding: 10px 24px;
   border-radius: 40px;
-
   background: rgba(10, 25, 35, 0.35);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
   border: 1px solid rgba(103, 232, 249, 0.15);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 4px 12px rgba(0, 0, 0, 0.2);
-
   transition: all 0.3s ease;
 }
 
@@ -219,9 +186,6 @@
     0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* =========================
-   MOBILE OPTIMIZATION
-========================= */
 @media (max-width: 768px) {
   .contact-card {
     border-radius: 32px;
@@ -234,13 +198,8 @@
   }
 }
 
-/* =========================
-   FOCUS VISIBLE (AAA)
-========================= */
 *:focus-visible {
   outline: 3px solid #22d3ee;
   outline-offset: 2px;
   border-radius: 8px;
 }
-
-/* Reduce motion support already handled in component */

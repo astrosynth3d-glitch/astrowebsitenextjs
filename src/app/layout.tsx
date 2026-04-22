@@ -21,8 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen text-white selection:bg-cyan-500/30 selection:text-cyan-200">
         <LiquidGlassBackground />
         <CustomCursor />
-
-        {/* ✅ Clean layering */}
         <main className="relative z-10 min-h-screen">
           {children}
         </main>

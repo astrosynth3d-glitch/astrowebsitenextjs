@@ -36,7 +36,6 @@ export default function ContactPage() {
 
   return (
     <div className="contact-root min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-8">
-      {/* Linktree button – subtle, premium */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -57,7 +56,6 @@ export default function ContactPage() {
         </Link>
       </motion.div>
 
-      {/* Main glass card */}
       <motion.div
         variants={glassCardVariants}
         initial="hidden"
@@ -113,7 +111,6 @@ export default function ContactPage() {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-              {/* Two‑column row for name/email */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <motion.div variants={itemVariants} className="input-group">
                   <label htmlFor="name" className="input-label">

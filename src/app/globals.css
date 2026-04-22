@@ -21,8 +21,6 @@ body {
   font-family: var(--font-sans), sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
-
-  /*  Premium cinematic background */
   background:
     radial-gradient(circle at 50% 30%, #021015 0%, #000000 60%),
     #000;

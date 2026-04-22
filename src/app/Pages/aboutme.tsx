@@ -41,7 +41,6 @@ export default function AboutMe() {
     fetchData();
   }, []);
 
-  // Premium liquid glass - mouse follow light
   useEffect(() => {
     const card = cardRef.current;
     if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -70,18 +69,14 @@ export default function AboutMe() {
       lang="en"
     >
       <div className="about-container">
-        
-        {/* Decorative glow - hidden from AT */}
         <div className="about-glow" aria-hidden="true" />
         
-        {/* Main premium liquid glass card */}
         <div 
           ref={cardRef}
           className="premium-liquid-card"
           role="region"
           aria-label="About profile"
         >
-          {/* Header */}
           <header className="about-header">
             <div className="about-header-left">
               <span className="header-line" aria-hidden="true" />
@@ -101,7 +96,6 @@ export default function AboutMe() {
             </div>
           </header>
 
-          {/* Main content - full width */}
           <div className="about-main">
             <h1 id="about-heading" className="about-title">
               <span className="title-main">{displayHeadline}</span>
@@ -128,7 +122,6 @@ export default function AboutMe() {
             </div>
           </div>
 
-          {/* Tools & Tech - moved below */}
           <aside className="about-sidebar" aria-labelledby="tools-heading">
             <div className="glass-inner-panel">
               <h2 id="tools-heading" className="tools-heading">

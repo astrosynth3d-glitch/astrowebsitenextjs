@@ -1,4 +1,3 @@
-// src/components/CustomCursor.tsx
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -13,42 +12,33 @@ import {
 
 type CursorState = "default" | "hover" | "click";
 
-// Optimized spring configs
 const MAIN_SPRING = { stiffness: 500, damping: 28, mass: 0.5 };
 const TRAIL_SPRING = { stiffness: 180, damping: 22, mass: 1.2 };
-// Mutable array for input range (framer-motion requires mutable)
 const VELOCITY_RANGE: number[] = [-2800, 0, 2800];
-
-// Common easing curve (cubic‑bezier easeOut)
 const EASE_OUT_CUBIC: Easing = [0, 0, 0.58, 1];
 
 export default function CustomCursor() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(() => {
-    // Lazy initializer – runs once on mount, avoids effect setState warning
     if (typeof window === "undefined") return false;
     return window.matchMedia("(max-width: 1024px), (hover: none), (pointer: coarse)").matches;
   });
   const [cursorState, setCursorState] = useState<CursorState>("default");
 
-  // Motion values
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
   const xVelocity = useVelocity(cursorX);
   const yVelocity = useVelocity(cursorY);
 
-  // Reactive transforms
   const scaleX = useTransform(xVelocity, VELOCITY_RANGE, [1.6, 1, 1.6]);
   const scaleY = useTransform(yVelocity, VELOCITY_RANGE, [0.65, 1, 0.65]);
   const rotate = useTransform(xVelocity, VELOCITY_RANGE, [-35, 0, 35]);
 
-  // Springs
   const x = useSpring(cursorX, MAIN_SPRING);
   const y = useSpring(cursorY, MAIN_SPRING);
   const trailX = useSpring(cursorX, TRAIL_SPRING);
   const trailY = useSpring(cursorY, TRAIL_SPRING);
 
-  // Refs
   const interactiveSelectorRef = useRef(
     "a, button, [role='button'], input, textarea, select, label, [data-cursor='hover'], .interactive-cursor"
   );
@@ -56,12 +46,10 @@ export default function CustomCursor() {
   const rafRef = useRef<number | null>(null);
   const currentTargetRef = useRef<Element | null>(null);
 
-  // Stable mobile change handler
   const handleMobileChange = useCallback((e: MediaQueryListEvent | MediaQueryList) => {
     setIsMobile(e.matches);
   }, []);
 
-  // Mark component as mounted
   useEffect(() => {
     rafRef.current = requestAnimationFrame(() => setMounted(true));
     return () => {
@@ -69,21 +57,14 @@ export default function CustomCursor() {
     };
   }, []);
 
-  // Media query listener – only after mount
   useEffect(() => {
     if (!mounted) return;
-
     const mql = window.matchMedia("(max-width: 1024px), (hover: none), (pointer: coarse)");
     mediaQueryRef.current = mql;
-    // No setState here – initial value already set via lazy initializer
     mql.addEventListener("change", handleMobileChange);
-
-    return () => {
-      mql.removeEventListener("change", handleMobileChange);
-    };
+    return () => mql.removeEventListener("change", handleMobileChange);
   }, [mounted, handleMobileChange]);
 
-  // Main cursor event listeners – only when not mobile and mounted
   useEffect(() => {
     if (!mounted || isMobile) return;
 
@@ -132,18 +113,14 @@ export default function CustomCursor() {
     };
   }, [mounted, isMobile, cursorX, cursorY]);
 
-  // Don't render on mobile or before mount
   if (!mounted || isMobile) return null;
 
   const isHover = cursorState === "hover";
   const isClick = cursorState === "click";
-
-  // Shared transition for state changes
   const stateTransition = { duration: 0.18, ease: EASE_OUT_CUBIC };
 
   return (
     <>
-      {/* Ambient glow trail */}
       <motion.div
         aria-hidden="true"
         className="fixed top-0 left-0 pointer-events-none z-9997 rounded-full will-change-transform"
@@ -154,8 +131,7 @@ export default function CustomCursor() {
           translateY: "-50%",
           width: 72,
           height: 72,
-          background:
-            "radial-gradient(circle, rgba(34,211,238,0.12) 0%, rgba(34,211,238,0.02) 70%, transparent 100%)",
+          background: "radial-gradient(circle, rgba(34,211,238,0.12) 0%, rgba(34,211,238,0.02) 70%, transparent 100%)",
         }}
         animate={{
           opacity: isHover ? 0.8 : 0.6,
@@ -164,7 +140,6 @@ export default function CustomCursor() {
         transition={stateTransition}
       />
 
-      {/* Main cursor blob */}
       <motion.div
         aria-hidden="true"
         className="fixed top-0 left-0 pointer-events-none z-9999 rounded-full border will-change-transform"
@@ -200,7 +175,6 @@ export default function CustomCursor() {
         transition={stateTransition}
       />
 
-      {/* Inner core dot */}
       <motion.div
         aria-hidden="true"
         className="fixed top-0 left-0 pointer-events-none z-9999 rounded-full will-change-transform"

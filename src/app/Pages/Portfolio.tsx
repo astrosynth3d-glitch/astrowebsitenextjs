@@ -138,7 +138,7 @@ function MediaLightbox({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-2xl"
+      className="fixed inset-0 z-200 flex items-center justify-center bg-black/95 backdrop-blur-2xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -372,7 +372,7 @@ function PortfolioCard({ project, index, onClick }: { project: PortfolioItem; in
   return (
     <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.07, type: "spring", damping: 22 }}>
       <MagneticCard onClick={onClick} className="portfolio-card group cursor-pointer h-full">
-        <div className="relative w-full aspect-[4/3] overflow-hidden">
+        <div className="relative w-full aspect-4/3 overflow-hidden">
           {preview ? (
             preview.isVideo ? (
               <video src={preview.url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" muted loop playsInline />
@@ -406,7 +406,7 @@ function PortfolioCard({ project, index, onClick }: { project: PortfolioItem; in
 function SkeletonCard() {
   return (
     <div className="portfolio-card">
-      <div className="w-full aspect-[4/3] skeleton-shimmer rounded-xl" />
+      <div className="w-full aspect-4/3 skeleton-shimmer rounded-xl" />
     </div>
   );
 }
@@ -459,7 +459,7 @@ export default function Portfolio() {
     <section className="portfolio-section">
       <div className="noise-overlay" aria-hidden />
 
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+      <div className="max-w-400 mx-auto px-6 md:px-10">
         <motion.div className="portfolio-header" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <div><h1 className="section-title">Projects</h1></div>
           <p className="section-count">{loading ? "—" : `${filtered.length} items`}</p>

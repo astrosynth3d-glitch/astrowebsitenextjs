@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Hero root – transparent, full viewport */
 .hero-root {
   position: relative;
   min-height: 100dvh;
@@ -9,7 +8,7 @@
   justify-content: center;
   padding: 1.5rem;
   background: transparent;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden;
 }
 
 .hero-content {
@@ -22,9 +21,6 @@
   text-align: center;
 }
 
-/* =========================
-   RECORDING BADGE – PREMIUM
-========================= */
 .hero-badge-wrapper {
   display: flex;
   justify-content: center;
@@ -35,19 +31,15 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  /* Scaled down padding for mobile, expands on larger screens */
   padding: clamp(6px, 1.5vw, 8px) clamp(16px, 4vw, 24px); 
   border-radius: 60px;
-
   background: rgba(10, 25, 35, 0.25);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 8px 20px -6px rgba(0, 0, 0, 0.5);
-
   transition: all 0.3s ease;
 }
 
@@ -69,7 +61,6 @@
   justify-content: center;
 }
 
-/* Sharp blink animation */
 @keyframes recording-blink {
   0%, 49.99% { opacity: 1; }
   50%, 100% { opacity: 0; }
@@ -118,9 +109,6 @@
   }
 }
 
-/* =========================
-   TYPOGRAPHY – APPLE STYLE
-========================= */
 .hero-headline {
   font-weight: 900;
   font-style: italic;
@@ -132,20 +120,18 @@
 
 .headline-primary {
   display: block;
-  /* Lowered minimum from 4rem to 2.25rem for mobile safety */
   font-size: clamp(2.25rem, 12vw, 10rem); 
   background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 40%, #ffffff 80%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
-  word-break: break-word; /* Prevents long words from breaking the layout */
+  word-break: break-word;
 }
 
 .headline-secondary {
   display: block;
   margin-top: 0.25rem;
-  /* Lowered minimum from 4rem to 2.25rem */
   font-size: clamp(2.25rem, 12vw, 10rem);
   color: transparent;
   -webkit-text-stroke: 2px rgba(255, 255, 255, 0.5);
@@ -168,7 +154,6 @@
 .hero-subheadline {
   max-width: 800px;
   margin: 0 auto;
-  /* Lowered minimum font size slightly */
   font-size: clamp(0.95rem, 2.5vw, 1.5rem);
   line-height: 1.6;
   color: #cbd5e1;
@@ -181,36 +166,26 @@
   margin-top: 0.75rem;
   font-weight: 500;
   color: #f1f5f9;
-  /* Lowered minimum font size slightly */
   font-size: clamp(1.1rem, 3vw, 1.75rem);
 }
 
-/* =========================
-   CTA BUTTON – PREMIUM
-========================= */
 .hero-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   margin-top: clamp(2rem, 5vw, 3rem);
-  
-  /* Fluid padding so it doesn't look massive on small phones */
   padding: clamp(12px, 3vw, 16px) clamp(24px, 6vw, 40px);
   border-radius: 40px;
-
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 8px 20px rgba(0, 0, 0, 0.3);
-
   color: white;
   font-weight: 600;
-  /* Fluid font size for the button text */
   font-size: clamp(0.9rem, 2vw, 1.125rem);
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -230,9 +205,6 @@
   color: #22d3ee;
 }
 
-/* =========================
-   ACCESSIBILITY & REDUCED MOTION
-========================= */
 @media (prefers-reduced-motion: reduce) {
   .badge-glow,
   .badge-core {
@@ -252,8 +224,4 @@
   outline: 3px solid #22d3ee;
   outline-offset: 4px;
   border-radius: 8px;
-}
-
-.animate-liquid-blob {
-  display: none;
 }

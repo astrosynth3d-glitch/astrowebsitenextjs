@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, Variants } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { fetchSanityData } from "@/lib/sanity";
@@ -21,25 +21,18 @@ interface HomeData {
   subHeadline2: string;
 }
 
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export default function HomePage() {
   const [content, setContent] = useState<HomeData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // 1. Add an isMounted state to track hydration
-  const [isMounted, setIsMounted] = useState(false);
+  // Clean Hydration pattern to prevent SSR mismatch
+  const isMounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
   const shouldReduceMotion = useReducedMotion();
 
-  // 2. Handle the Hydration / Mount State asynchronously to avoid the cascading render linter error
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsMounted(true);
-    }, 0);
-    
-    // Cleanup the timer just in case the component unmounts instantly
-    return () => clearTimeout(timer);
-  }, []);
-
-  // 3. Handle Data Fetching in a separate, focused effect
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,10 +56,8 @@ export default function HomePage() {
   const displaySub2 =
     content?.subHeadline2 || "through digital logs and cinematic visuals.";
 
-  // 4. Create a safe value that defaults to 'false' during SSR to safely match the server's render
   const reduceMotion = isMounted ? shouldReduceMotion : false;
 
-  // Animation variants (using the safe 'reduceMotion' variable)
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -106,7 +97,6 @@ export default function HomePage() {
         animate="visible"
         variants={containerVariants}
       >
-        {/* Recording Badge */}
         <motion.div variants={itemVariants} className="hero-badge-wrapper">
           <div className="hero-badge">
             <div className="badge-dot-container">
@@ -117,7 +107,6 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-        {/* Headline */}
         <motion.h1 variants={itemVariants} className="hero-headline">
           <span
             className={`headline-primary ${isLoading ? "animate-pulse" : ""}`}
@@ -127,20 +116,17 @@ export default function HomePage() {
           <span className="headline-secondary">{displayHeadline2}</span>
         </motion.h1>
 
-        {/* Decorative line */}
         <motion.div
           variants={itemVariants}
           className="hero-divider"
           aria-hidden="true"
         />
 
-        {/* Subheadline */}
         <motion.p variants={itemVariants} className="hero-subheadline">
           {displaySub1}
           <span className="subheadline-highlight">{displaySub2}</span>
         </motion.p>
 
-        {/* CTA Button */}
         <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
           <Link href="/#portfolio" className="hero-cta group">
             <span>Explore Portfolio</span>

@@ -1,4 +1,3 @@
-// src/components/LiquidGlassBackground.tsx
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -227,7 +226,7 @@ export default function LiquidGlassBackground() {
       ctx.restore();
     };
 
-    const drawConnections = (ctx: CanvasRenderingContext2D, particles: Particle[], time: number) => {
+    const drawConnections = (ctx: CanvasRenderingContext2D, particles: Particle[]) => {
       if (!deviceProfileRef.current.enableConnections) return;
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
@@ -357,7 +356,7 @@ export default function LiquidGlassBackground() {
         }
       }
 
-      drawConnections(ctx, particles, time);
+      drawConnections(ctx, particles);
 
       const cornerDistance = Math.hypot(width / 2, height / 2);
       const grad = ctx.createRadialGradient(
