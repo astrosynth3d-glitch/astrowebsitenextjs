@@ -1,105 +1,246 @@
+/* ROOT */
+.contact-root {
+  position: relative;
+  background: transparent;
+}
+
+/* =========================
+   PREMIUM APPLE‑STYLE LIQUID GLASS CARD
+========================= */
 .contact-card {
-  background: linear-gradient(
-    135deg, 
-    rgba(255, 255, 255, 0.03) 0%, 
-    rgba(255, 255, 255, 0.01) 100%
-  );
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+  border-radius: 36px;
+
+  /* Deep, translucent base */
+  background-color: rgba(10, 25, 35, 0.45);
+
+  /* Subtle cyan depth gradients */
+  background-image:
+    radial-gradient(140% 100% at 50% 0%,
+      rgba(103, 232, 249, 0.08) 0%, transparent 55%),
+    radial-gradient(80% 60% at 100% 0%,
+      rgba(34, 211, 238, 0.05), transparent 50%),
+    linear-gradient(180deg,
+      rgba(6, 182, 212, 0.04) 0%,
+      rgba(8, 145, 178, 0.02) 100%);
+
+  /* Strong backdrop blur for depth */
+  backdrop-filter: blur(60px) saturate(200%);
+  -webkit-backdrop-filter: blur(60px) saturate(200%);
+
+  /* Delicate border with inner glow */
+  border: 1px solid rgba(103, 232, 249, 0.15);
+  box-shadow:
+    0 0 0 0.5px rgba(165, 243, 252, 0.1) inset,
+    0 1px 2px rgba(255, 255, 255, 0.05) inset,
+    0 20px 40px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(6, 182, 212, 0.1);
+
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
 }
 
-.hero-glow {
+/* Hover lift – Apple‑style subtle elevation */
+.contact-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(103, 232, 249, 0.25);
+  box-shadow:
+    0 0 0 0.5px rgba(165, 243, 252, 0.15) inset,
+    0 1px 3px rgba(255, 255, 255, 0.08) inset,
+    0 30px 60px -12px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(6, 182, 212, 0.2);
+}
+
+/* Top highlight – essential for liquid glass */
+.contact-card::before {
+  content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
+  inset: 0;
+  border-radius: inherit;
   pointer-events: none;
-  z-index: 0;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(165, 243, 252, 0.03) 15%,
+    transparent 35%);
+  opacity: 1;
+}
+
+/* =========================
+   INPUTS – PREMIUM GLASS
+========================= */
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #a5f3fc;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .contact-input {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 18px;
+
+  background: rgba(8, 20, 28, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(103, 232, 249, 0.15);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.25s ease;
 }
 
 .contact-input:focus {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+  outline: none;
+  background: rgba(12, 30, 40, 0.6);
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 0 3px rgba(34, 211, 238, 0.15),
+    0 0 20px rgba(34, 211, 238, 0.1) inset;
 }
 
+.contact-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}
+
+.input-error {
+  color: #ff8a8a;
+  font-size: 0.7rem;
+  margin-top: 6px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* =========================
+   BUTTON – PREMIUM GRADIENT
+========================= */
 .contact-submit-btn {
-  background: white;
-  color: black;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: 40px;
+  margin-top: 8px;
+
+  background: linear-gradient(145deg, #22d3ee, #0ea5e9);
+  color: #030712;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 0 0 0.5px rgba(165, 243, 252, 0.3) inset,
+    0 8px 20px rgba(34, 211, 238, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .contact-submit-btn:hover {
-  background: #22d3ee;
-  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+  transform: translateY(-1px);
+  background: linear-gradient(145deg, #38dff5, #1cb5f0);
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.4) inset,
+    0 12px 28px rgba(34, 211, 238, 0.5),
+    0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Specific Tablet adjustments */
-@media (max-width: 768px) {
-  .contact-title {
-    font-size: 2.5rem;
-  }
-  .contact-card {
-    border-radius: 1.5rem;
-    padding: 2rem 1.5rem;
-  }
-}.contact-card {
-  background: linear-gradient(
-    135deg, 
-    rgba(255, 255, 255, 0.03) 0%, 
-    rgba(255, 255, 255, 0.01) 100%
-  );
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+.contact-submit-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.3) inset,
+    0 4px 12px rgba(34, 211, 238, 0.4);
 }
 
-.hero-glow {
+/* Shine effect */
+.contact-submit-btn::after {
+  content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: skewX(-15deg);
+  transition: left 0.6s ease;
 }
 
-.contact-input {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.contact-submit-btn:hover::after {
+  left: 150%;
 }
 
-.contact-input:focus {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+.contact-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-.contact-submit-btn {
-  background: white;
-  color: black;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+/* =========================
+   LINKTREE BUTTON – SUBTLE GLASS
+========================= */
+.glass-linktree {
+  display: inline-flex;
+  gap: 10px;
+  padding: 10px 24px;
+  border-radius: 40px;
+
+  background: rgba(10, 25, 35, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(103, 232, 249, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.3s ease;
 }
 
-.contact-submit-btn:hover {
-  background: #22d3ee;
-  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+.glass-linktree:hover {
+  background: rgba(10, 25, 35, 0.5);
+  border-color: rgba(103, 232, 249, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Specific Tablet adjustments */
+/* =========================
+   MOBILE OPTIMIZATION
+========================= */
 @media (max-width: 768px) {
-  .contact-title {
-    font-size: 2.5rem;
-  }
   .contact-card {
-    border-radius: 1.5rem;
-    padding: 2rem 1.5rem;
+    border-radius: 32px;
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+  }
+  
+  .contact-input {
+    padding: 12px 16px;
   }
 }
+
+/* =========================
+   FOCUS VISIBLE (AAA)
+========================= */
+*:focus-visible {
+  outline: 3px solid #22d3ee;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Reduce motion support already handled in component */

@@ -6,8 +6,8 @@ import { useEffect, useRef } from 'react';
 interface Particle {
   x: number;
   y: number;
-  baseX: number; // NEW: The "home" X position to return to
-  baseY: number; // NEW: The "home" Y position to return to
+  baseX: number;
+  baseY: number;
   radius: number;
   baseRadius: number;
   growthSpeed: number;
@@ -43,7 +43,7 @@ export default function LiquidGlassBackground() {
     maxBands: 4,
     enableConnections: true,
     targetFPS: 60,
-    shadowBlur: 40, // Increased for a brighter glow
+    shadowBlur: 40,
     baseRadiusMin: 15,
     baseRadiusMax: 35,
   });
@@ -127,8 +127,8 @@ export default function LiquidGlassBackground() {
         particles.push({
           x: xPos,
           y: yPos,
-          baseX: xPos, // Set home X
-          baseY: yPos, // Set home Y
+          baseX: xPos,
+          baseY: yPos,
           radius: baseRadius,
           baseRadius,
           growthSpeed: 0.2 + Math.random() * 0.5,
@@ -136,7 +136,7 @@ export default function LiquidGlassBackground() {
           hue: 190 + Math.random() * 90, 
           vx: 0,
           vy: 0,
-          opacity: 0.4 + Math.random() * 0.4, // BRIGHTER: Increased from 0.15 to 0.4 base
+          opacity: 0.4 + Math.random() * 0.4,
           isStar: false
         });
       }
@@ -152,7 +152,7 @@ export default function LiquidGlassBackground() {
           phase: Math.random() * Math.PI * 2,
           hue: 200 + Math.random() * 50,
           vx: 0, vy: -0.05 - Math.random() * 0.1, 
-          opacity: Math.random() * 0.8 + 0.4, // BRIGHTER stars
+          opacity: Math.random() * 0.8 + 0.4,
           isStar: true
         });
       }
@@ -167,12 +167,11 @@ export default function LiquidGlassBackground() {
       const finalRadius = radius * (1 + scrollBoost * 0.2);
       
       ctx.shadowBlur = profile.shadowBlur;
-      ctx.shadowColor = `hsla(${hue}, 100%, 65%, ${opacity * 0.9})`; // Brighter shadow
+      ctx.shadowColor = `hsla(${hue}, 100%, 65%, ${opacity * 0.9})`;
 
       const grad = ctx.createRadialGradient(
         x - finalRadius * 0.3, y - finalRadius * 0.3, finalRadius * 0.1, x, y, finalRadius
       );
-      // BRIGHTER: Boosted lightness and saturation across all gradient stops
       grad.addColorStop(0, `hsla(${hue}, 100%, 85%, ${opacity})`);
       grad.addColorStop(0.5, `hsla(${hue + 15}, 90%, 60%, ${opacity * 0.7})`);
       grad.addColorStop(1, `hsla(${hue - 20}, 90%, 40%, ${opacity * 0.2})`);
@@ -213,7 +212,6 @@ export default function LiquidGlassBackground() {
         const yOffset = Math.sin(time * 0.15 + i) * 80;
         const grad = ctx.createLinearGradient(0, height * 0.1 + yOffset, width, height * 0.9 + yOffset);
         
-        // BRIGHTER: Increased alpha on the cosmic background bands
         grad.addColorStop(0, 'hsla(260, 70%, 30%, 0.04)');
         grad.addColorStop(0.5, 'hsla(200, 90%, 50%, 0.06)');
         grad.addColorStop(1, 'hsla(180, 80%, 40%, 0.04)');
@@ -243,7 +241,7 @@ export default function LiquidGlassBackground() {
           const dist = Math.hypot(dx, dy);
           
           if (dist < 200) { 
-            const intensity = (1 - dist / 200) * 0.25; // Brighter connection lines
+            const intensity = (1 - dist / 200) * 0.25;
             const avgHue = (orbs[i].hue + orbs[j].hue) / 2;
             
             ctx.beginPath();
@@ -263,7 +261,7 @@ export default function LiquidGlassBackground() {
       const ix = interactionRef.current.x;
       const iy = interactionRef.current.y;
       const forceRadius = 250; 
-      const strength = 0.6; // Slightly stronger push to compensate for the rubber-band effect
+      const strength = 0.6;
 
       for (const p of particlesRef.current) {
         if (p.isStar) continue; 
@@ -317,7 +315,6 @@ export default function LiquidGlassBackground() {
       applyInteractionForce();
       decayScrollIntensity();
 
-      // Slightly brighter base color
       ctx.fillStyle = '#030612';
       ctx.fillRect(0, 0, width, height);
 
@@ -341,21 +338,17 @@ export default function LiquidGlassBackground() {
           growthFactor *= 1 + scrollBoost * 0.3;
           const currentRadius = p.baseRadius * growthFactor;
 
-          // NEW: Gentle Spring Physics (Rubber-band back to origin)
           const homeDx = p.baseX - p.x;
           const homeDy = p.baseY - p.y;
-          // Slowly pull velocity toward home. (0.003 is the spring stiffness)
           p.vx += homeDx * 0.003; 
           p.vy += homeDy * 0.003;
 
-          // Add slight natural wobble so they don't sit perfectly still when at home
           p.vx += Math.sin(time + p.phase) * 0.02;
           p.vy += Math.cos(time + p.phase) * 0.02;
 
           p.x += p.vx;
           p.y += p.vy;
           
-          // Friction (Dampening)
           p.vx *= 0.94; 
           p.vy *= 0.94;
 
@@ -371,7 +364,6 @@ export default function LiquidGlassBackground() {
         width / 2, height / 2, height * 0.2, 
         width / 2, height / 2, cornerDistance
       );
-      // Adjusted vignette to be slightly less oppressive
       grad.addColorStop(0, 'rgba(3, 6, 18, 0)');
       grad.addColorStop(0.5, 'rgba(3, 6, 18, 0.2)');
       grad.addColorStop(1, 'rgba(3, 6, 18, 0.75)'); 

@@ -1,101 +1,150 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Style/navigation.css';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Updated hrefs to point to IDs on the main page for smooth scrolling
   const navLinks = [
     { name: 'Main', href: '/#home' },
     { name: 'About Me', href: '/#about' },
     { name: 'Portfolio', href: '/#portfolio' },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  const menuVariants = {
+    closed: { opacity: 0, transition: { duration: 0.2 } },
+    open: { opacity: 1, transition: { duration: 0.3 } }
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, y: 20 },
+    open: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { 
+        delay: i * 0.08, 
+        duration: 0.4, 
+        ease: [0.23, 1, 0.32, 1] as const // Fix: assert as const tuple
+      }
+    })
+  };
+
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 nav-container">
-      {/* Logo Section - Background glows removed */}
-      <Link href="/#home" className="flex items-center gap-4 group cursor-pointer z-50">
-        <div className="relative">
-          <div className="w-10 h-10 bg-cyan-400 rotate-45 flex items-center justify-center transition-transform duration-700 group-hover:rotate-225 shadow-[0_0_20px_rgba(34,211,238,0.5)]">
-            <div className="w-4 h-4 bg-black"></div>
+    <nav className={`nav-hero ${scrolled ? 'nav-scrolled' : ''}`}>
+      {/* Logo – Hero Scale */}
+      <Link href="/#home" className="nav-logo-hero group" aria-label="Home">
+        <div className="logo-icon-hero">
+          <div className="logo-outer-hero">
+            <div className="logo-inner-hero"></div>
           </div>
         </div>
-        <span className="font-bold tracking-tighter text-2xl bg-linear-to-r from-white via-white to-gray-500 bg-clip-text text-transparent">
-          Astrosynth-Logs
+        <span className="logo-text-hero">
+          Astrosynth<span className="logo-text-hero-light">-Logs</span>
         </span>
       </Link>
       
-      {/* Desktop Links */}
-      <div className="hidden md:flex items-center gap-6 bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-md">
+      {/* Desktop Navigation – Hero Links */}
+      <div className="nav-desktop-hero">
         {navLinks.map((link) => (
           <Link 
             key={link.name} 
             href={link.href} 
-            className="nav-link text-[12px] lg:text-[13px] font-bold tracking-[0.25em] uppercase px-6 py-2.5"
+            className="nav-link-hero"
           >
             {link.name}
           </Link>
         ))}
       </div>
 
-      {/* Action Button & Mobile Toggle */}
-      <div className="flex items-center gap-6">
+      {/* Desktop Contact Button – Hero CTA */}
+      <div className="nav-actions-hero">
         <Link 
           href="/#contact" 
-          className="hidden sm:flex items-center justify-center btn-liquid text-white px-8 py-3 rounded-full font-bold text-[11px] lg:text-[12px] uppercase tracking-[0.25em]"
+          className="nav-contact-btn-hero"
         >
-          Contact
+          <span>Contact</span>
+          <span className="btn-shine-hero" aria-hidden="true" />
         </Link>
 
-        {/* Hamburger Menu Icon - Accessibility fixed for ESLint */}
+        {/* Mobile Menu Toggle */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Menu"
+          className="nav-toggle-hero"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
-          className="md:hidden flex flex-col gap-2 z-50 p-2 focus:outline-none"
         >
-          <span className={`w-7 h-0.5 bg-white transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2.5' : ''}`}></span>
-          <span className={`w-7 h-0.5 bg-white transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`w-7 h-0.5 bg-white transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
+          <span className={`toggle-line-hero ${isOpen ? 'open' : ''}`}></span>
+          <span className={`toggle-line-hero ${isOpen ? 'open' : ''}`}></span>
+          <span className={`toggle-line-hero ${isOpen ? 'open' : ''}`}></span>
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay – Hero Style */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 h-screen bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-10 md:hidden"
+            className="nav-mobile-menu-hero"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
           >
-            {navLinks.map((link, i) => (
+            <div className="mobile-menu-content-hero">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  custom={i}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  variants={itemVariants}
+                >
+                  <Link 
+                    href={link.href} 
+                    onClick={() => setIsOpen(false)}
+                    className="mobile-nav-link-hero"
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+              
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                key={link.name}
+                custom={navLinks.length}
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={itemVariants}
               >
                 <Link 
-                  href={link.href} 
+                  href="/#contact"
                   onClick={() => setIsOpen(false)}
-                  className="text-3xl font-black tracking-[0.3em] uppercase hover:text-cyan-400 transition-colors italic"
+                  className="mobile-contact-btn-hero"
                 >
-                  {link.name}
+                  Contact
                 </Link>
               </motion.div>
-            ))}
-            
-            <Link 
-              href="/#contact"
-              onClick={() => setIsOpen(false)}
-              className="btn-liquid text-white px-12 py-5 rounded-full font-bold text-sm uppercase tracking-[0.3em]"
-            >
-              Contact
-            </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

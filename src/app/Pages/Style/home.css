@@ -1,72 +1,259 @@
 @import "tailwindcss";
 
-/* Premium Liquid Glass Badge
-  Creates a highly realistic frosted glass effect with directional lighting 
-*/
-.premium-liquid-badge {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.01) 100%
-  );
+/* Hero root – transparent, full viewport */
+.hero-root {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: transparent;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* =========================
+   RECORDING BADGE – PREMIUM
+========================= */
+.hero-badge-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  /* Scaled down padding for mobile, expands on larger screens */
+  padding: clamp(6px, 1.5vw, 8px) clamp(16px, 4vw, 24px); 
+  border-radius: 60px;
+
+  background: rgba(10, 25, 35, 0.25);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  
-  /* Delicate borders to catch the light */
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  border-right: 1px solid rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-  
-  box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px -6px rgba(0, 0, 0, 0.5);
+
+  transition: all 0.3s ease;
 }
 
-.premium-liquid-badge:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(34, 211, 238, 0.12) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  border-top: 1px solid rgba(34, 211, 238, 0.4);
-  border-left: 1px solid rgba(34, 211, 238, 0.2);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 
-    0 15px 35px -5px rgba(0, 0, 0, 0.6),
-    0 0 20px -5px rgba(34, 211, 238, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+.hero-badge:hover {
+  background: rgba(10, 25, 35, 0.35);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 28px -8px rgba(0, 0, 0, 0.6);
+  transform: scale(1.02);
 }
 
-/* Hollow Text Effect for "LOGS" 
-  Using webkit-text-stroke to create a transparent, outlined typography effect
-*/
-.hollow-text {
+.badge-dot-container {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sharp blink animation */
+@keyframes recording-blink {
+  0%, 49.99% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.badge-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ef4444;
+  filter: blur(5px);
+  animation: recording-blink 2s infinite;
+}
+
+.badge-core {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  background: #ef4444;
+  border-radius: 50%;
+  animation: recording-blink 2s infinite;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.badge-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fecaca;
+}
+
+@media (min-width: 640px) {
+  .badge-label {
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+  }
+  .badge-dot-container {
+    width: 16px;
+    height: 16px;
+  }
+  .badge-core {
+    width: 9px;
+    height: 9px;
+  }
+}
+
+/* =========================
+   TYPOGRAPHY – APPLE STYLE
+========================= */
+.hero-headline {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  width: 100%;
+}
+
+.headline-primary {
+  display: block;
+  /* Lowered minimum from 4rem to 2.25rem for mobile safety */
+  font-size: clamp(2.25rem, 12vw, 10rem); 
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 40%, #ffffff 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+  word-break: break-word; /* Prevents long words from breaking the layout */
 }
 
-.hollow-text:hover {
-  -webkit-text-stroke: 2px rgba(34, 211, 238, 0.9);
+.headline-secondary {
+  display: block;
+  margin-top: 0.25rem;
+  /* Lowered minimum from 4rem to 2.25rem */
+  font-size: clamp(2.25rem, 12vw, 10rem);
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.5);
+  transition: -webkit-text-stroke 0.3s ease;
+  word-break: break-word;
 }
 
-/* Liquid Background Animation 
-  Slowly morphs and rotates the background colored blurs
-*/
-@keyframes liquid-blob {
-  0%, 100% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+.hero-content:hover .headline-secondary {
+  -webkit-text-stroke-color: rgba(103, 232, 249, 0.8);
+}
+
+.hero-divider {
+  width: clamp(80px, 15vw, 150px);
+  height: 2px;
+  margin: clamp(1.5rem, 4vw, 2rem) auto;
+  background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+  border-radius: 2px;
+}
+
+.hero-subheadline {
+  max-width: 800px;
+  margin: 0 auto;
+  /* Lowered minimum font size slightly */
+  font-size: clamp(0.95rem, 2.5vw, 1.5rem);
+  line-height: 1.6;
+  color: #cbd5e1;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.subheadline-highlight {
+  display: block;
+  margin-top: 0.75rem;
+  font-weight: 500;
+  color: #f1f5f9;
+  /* Lowered minimum font size slightly */
+  font-size: clamp(1.1rem, 3vw, 1.75rem);
+}
+
+/* =========================
+   CTA BUTTON – PREMIUM
+========================= */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(2rem, 5vw, 3rem);
+  
+  /* Fluid padding so it doesn't look massive on small phones */
+  padding: clamp(12px, 3vw, 16px) clamp(24px, 6vw, 40px);
+  border-radius: 40px;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.3);
+
+  color: white;
+  font-weight: 600;
+  /* Fluid font size for the button text */
+  font-size: clamp(0.9rem, 2vw, 1.125rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hero-cta:hover {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 12px 30px rgba(34, 211, 238, 0.3);
+  transform: translateY(-1px);
+}
+
+.cta-icon {
+  color: #22d3ee;
+}
+
+/* =========================
+   ACCESSIBILITY & REDUCED MOTION
+========================= */
+@media (prefers-reduced-motion: reduce) {
+  .badge-glow,
+  .badge-core {
+    animation: none;
+    opacity: 1;
   }
-  33% {
-    transform: translate(5%, 8%) scale(1.05) rotate(90deg);
+  .hero-badge,
+  .hero-cta {
+    transition: none;
   }
-  66% {
-    transform: translate(-5%, -5%) scale(0.95) rotate(180deg);
+  .hero-cta:hover {
+    transform: none;
   }
+}
+
+*:focus-visible {
+  outline: 3px solid #22d3ee;
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .animate-liquid-blob {
-  animation: liquid-blob 25s infinite ease-in-out alternate;
+  display: none;
 }

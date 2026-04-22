@@ -1,10 +1,19 @@
 "use client";
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { sanityClient } from '@/lib/sanity';
-import './Style/home.css';
 
-// Define the shape of your Sanity data
+import { motion, useReducedMotion, Variants } from "framer-motion";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { fetchSanityData } from "@/lib/sanity";
+import "./Style/home.css";
+
+const query = `*[_type == "homepage"][0]{
+  headline1,
+  headline2,
+  subHeadline1,
+  subHeadline2
+}`;
+
 interface HomeData {
   headline1: string;
   headline2: string;
@@ -15,89 +24,133 @@ interface HomeData {
 export default function HomePage() {
   const [content, setContent] = useState<HomeData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // 1. Add an isMounted state to track hydration
+  const [isMounted, setIsMounted] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
+  // 2. Handle the Hydration / Mount State asynchronously to avoid the cascading render linter error
   useEffect(() => {
-    const fetchSanityData = async () => {
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 0);
+    
+    // Cleanup the timer just in case the component unmounts instantly
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 3. Handle Data Fetching in a separate, focused effect
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        // Query fetches the first document of type 'homepage'
-        // Ensure the field names here match the 'name' properties in your Sanity schema
-        const query = `*[_type == "homepage"][0]{
-          headline1,
-          headline2,
-          subHeadline1,
-          subHeadline2
-        }`;
-        
-        const data = await sanityClient.fetch(query);
+        const data = await fetchSanityData<HomeData>(query);
         setContent(data);
       } catch (error) {
-        console.error("Error fetching data from Sanity:", error);
+        console.error("Failed to fetch sanity data:", error);
       } finally {
         setIsLoading(false);
       }
     };
-
-    fetchSanityData();
+    
+    fetchData();
   }, []);
 
-  // Fallbacks ensure the UI looks good even if Sanity data is still loading or fails
-  const displayHeadline1 = content?.headline1;
-  const displayHeadline2 = content?.headline2;
-  const displaySub1 = content?.subHeadline1;
-  const displaySub2 = content?.subHeadline2;
+  const displayHeadline1 = content?.headline1 || "ASTROSYNTH";
+  const displayHeadline2 = content?.headline2 || "LOGS";
+  const displaySub1 =
+    content?.subHeadline1 ||
+    "A high-tech portfolio for a 3D generalist capturing an artistic journey";
+  const displaySub2 =
+    content?.subHeadline2 || "through digital logs and cinematic visuals.";
+
+  // 4. Create a safe value that defaults to 'false' during SSR to safely match the server's render
+  const reduceMotion = isMounted ? shouldReduceMotion : false;
+
+  // Animation variants (using the safe 'reduceMotion' variable)
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.2,
+        staggerChildren: reduceMotion ? 0 : 0.12,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: reduceMotion ? 0 : 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] },
+    },
+  };
+
+  const buttonVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { delay: reduceMotion ? 0 : 0.5, duration: 0.4, ease: "easeOut" },
+    },
+    hover: reduceMotion ? {} : { scale: 1.02 },
+    tap: reduceMotion ? {} : { scale: 0.98 },
+  };
 
   return (
-    <div className="relative min-h-screen text-white font-sans antialiased flex flex-col items-center justify-center z-0 transition-opacity duration-500">
-      
-      <main className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full">
-        
-        {/* Liquid Glass Badge */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="premium-liquid-badge px-6 py-3 rounded-full mb-10 flex items-center gap-3 cursor-pointer group"
-          role="status"
-          aria-label="Status: Recording My Journey"
-        >
-          <div className="relative flex items-center justify-center w-2 h-2">
-            <span className="absolute inline-flex w-full h-full rounded-full bg-cyan-400 opacity-60 animate-ping group-hover:opacity-100 transition-opacity duration-500"></span>
-            <span className="relative inline-flex rounded-full w-1.5 h-1.5 bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+    <div className="hero-root">
+      <motion.div
+        className="hero-content"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        {/* Recording Badge */}
+        <motion.div variants={itemVariants} className="hero-badge-wrapper">
+          <div className="hero-badge">
+            <div className="badge-dot-container">
+              <span className="badge-glow" />
+              <span className="badge-core" />
+            </div>
+            <span className="badge-label">Recording My Journey</span>
           </div>
-          
-          <span className="text-xs font-black tracking-[0.3em] uppercase text-cyan-50 group-hover:text-cyan-300 transition-colors duration-300">
-            Recording My Journey
-          </span>
         </motion.div>
 
-        {/* Title Section */}
-        <motion.h1 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className={`text-6xl sm:text-7xl md:text-9xl font-black mb-8 italic uppercase leading-[0.85] tracking-tighter cursor-default ${isLoading ? 'animate-pulse' : ''}`}
-        >
-          <span className="block text-white drop-shadow-2xl transition-transform hover:scale-[1.02] duration-700 ease-out">
+        {/* Headline */}
+        <motion.h1 variants={itemVariants} className="hero-headline">
+          <span
+            className={`headline-primary ${isLoading ? "animate-pulse" : ""}`}
+          >
             {displayHeadline1}
           </span>
-          <span className="block mt-4 hollow-text select-none transition-all duration-700 hover:drop-shadow-[0_0_25px_rgba(34,211,238,0.4)]">
-            {displayHeadline2}
-          </span>
+          <span className="headline-secondary">{displayHeadline2}</span>
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className={`max-w-2xl text-gray-400 text-base md:text-xl font-light leading-relaxed text-balance ${isLoading ? 'animate-pulse' : ''}`}
-        >
+        {/* Decorative line */}
+        <motion.div
+          variants={itemVariants}
+          className="hero-divider"
+          aria-hidden="true"
+        />
+
+        {/* Subheadline */}
+        <motion.p variants={itemVariants} className="hero-subheadline">
           {displaySub1}
-          <span className="text-gray-200 block mt-2 font-medium">
-            {displaySub2}
-          </span>
+          <span className="subheadline-highlight">{displaySub2}</span>
         </motion.p>
-      </main>
+
+        {/* CTA Button */}
+        <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
+          <Link href="/#portfolio" className="hero-cta group">
+            <span>Explore Portfolio</span>
+            <ArrowRight
+              size={18}
+              className="cta-icon group-hover:translate-x-1 transition-transform duration-300"
+            />
+          </Link>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "sanity";
 import { fetchSanityData } from "@/lib/sanity";
 import "./Style/aboutme.css";
 
-// ✅ Move query OUTSIDE (fixes useEffect warning)
 const query = `*[_type == "about"][0]{
   systemLabel,
   headline,
@@ -27,99 +26,130 @@ interface AboutData {
 
 export default function AboutMe() {
   const [content, setContent] = useState<AboutData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchSanityData<AboutData>(query);
-      setContent(data);
-      setLoading(false);
+      try {
+        const data = await fetchSanityData<AboutData>(query);
+        setContent(data);
+      } finally {
+        setIsLoading(false);
+      }
     };
-
     fetchData();
-
-    // 🔄 Live updates every 5 seconds
-    const interval = setInterval(fetchData, 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
-  // ✅ Fallbacks
-  const displayLabel = content?.systemLabel || "System.Profile";
-  const displayHeadline =
-    content?.headline || "3D Generalist · Character Artist ·";
-  const displaySubheadline =
-    content?.subheadline || "Professional Tech Magpie";
-  const displayQuote =
-    content?.quote ||
-    "Always curious, always learning—I'm the kind of artist who dives deep into both pipelines and pixels.";
-  const tools =
-    content?.skills || [
-      "Unreal Engine",
-      "Blender",
-      "ZBrush",
-      "Maya",
-      "Substance 3D",
-    ];
+  // Premium liquid glass - mouse follow light
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const handleMove = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--mx', `${x}%`);
+      card.style.setProperty('--my', `${y}%`);
+    };
+    card.addEventListener('mousemove', handleMove);
+    return () => card.removeEventListener('mousemove', handleMove);
+  }, []);
+
+  const displayLabel = content?.systemLabel || "SYSTEM.PROFILE";
+  const displayHeadline = content?.headline || "3D Generalist · Character Artist";
+  const displaySubheadline = content?.subheadline || "Professional Tech Magpie";
+  const displayQuote = content?.quote || "Always curious, always learning—I'm the kind of artist who dives deep into both pipelines and pixels.";
+  const tools = content?.skills || ["Unreal Engine", "Blender", "Maya", "Substance 3D", "ZBrush"];
 
   return (
-    <section
-      id="about"
-      className="relative min-h-screen flex items-center justify-center p-6 md:p-12"
+    <section 
+      className="about-section"
+      aria-labelledby="about-heading"
+      lang="en"
     >
-      <div className="relative z-10 w-full max-w-4xl p-8 md:p-14 rounded-4xl premium-liquid-card">
-
-        {/* Label */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-px bg-[#22d3ee]"></div>
-          <span className="text-[#22d3ee] text-xs font-bold tracking-[0.3em] uppercase">
-            {displayLabel}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h1
-          className={`text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-8 tracking-tight ${
-            loading ? "animate-pulse" : ""
-          }`}
+      <div className="about-container">
+        
+        {/* Decorative glow - hidden from AT */}
+        <div className="about-glow" aria-hidden="true" />
+        
+        {/* Main premium liquid glass card */}
+        <div 
+          ref={cardRef}
+          className="premium-liquid-card"
+          role="region"
+          aria-label="About profile"
         >
-          {displayHeadline}
-          <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#22d3ee] to-[#a855f7]">
-            {displaySubheadline}
-          </span>
-        </h1>
-
-        {/* Description */}
-        <div
-          className={`space-y-6 text-gray-300 text-base md:text-lg leading-relaxed font-light ${
-            loading ? "animate-pulse" : ""
-          }`}
-        >
-          {content?.description ? (
-            <PortableText value={content.description} />
-          ) : (
-            <p>Loading...</p>
-          )}
-
-          {/* Quote (✅ fixed warning) */}
-          <div className="my-8 border-l-[3px] border-[#22d3ee]/80 pl-6 py-2">
-            <p className="italic text-gray-400 font-normal">
-              &ldquo;{displayQuote}&rdquo;
-            </p>
-          </div>
-        </div>
-
-        {/* Skills */}
-        <div className="mt-12 flex flex-wrap gap-4">
-          {tools.map((tool, index) => (
-            <span
-              key={index}
-              className="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-gray-200 tracking-wide hover:bg-white/10 hover:border-[#22d3ee]/50 transition-all duration-300"
+          {/* Header */}
+          <header className="about-header">
+            <div className="about-header-left">
+              <span className="header-line" aria-hidden="true" />
+              <span className="header-label">
+                {displayLabel}
+              </span>
+            </div>
+            
+            <div 
+              className="status-indicator"
+              role="status"
+              aria-live="polite"
+              aria-label="Profile status: Active"
             >
-              {tool}
-            </span>
-          ))}
+              <span className="status-dot" aria-hidden="true" />
+              <span>ACTIVE</span>
+            </div>
+          </header>
+
+          {/* Main content - full width */}
+          <div className="about-main">
+            <h1 id="about-heading" className="about-title">
+              <span className="title-main">{displayHeadline}</span>
+              <span className="title-sub">{displaySubheadline}</span>
+            </h1>
+
+            <div className="about-text-scrim">
+              {isLoading ? (
+                <div role="status" aria-label="Loading about content">
+                  <div className="skeleton skeleton-text" />
+                  <div className="skeleton skeleton-text" style={{width: '90%'}} />
+                  <div className="skeleton skeleton-text" style={{width: '95%'}} />
+                  <div className="skeleton skeleton-text" style={{width: '85%'}} />
+                </div>
+              ) : (
+                <div className="prose-content">
+                  <PortableText value={content?.description || []} />
+                </div>
+              )}
+
+              <blockquote className="about-quote">
+                <p>&ldquo;{displayQuote}&rdquo;</p>
+              </blockquote>
+            </div>
+          </div>
+
+          {/* Tools & Tech - moved below */}
+          <aside className="about-sidebar" aria-labelledby="tools-heading">
+            <div className="glass-inner-panel">
+              <h2 id="tools-heading" className="tools-heading">
+                Tools & Tech
+              </h2>
+              
+              <ul className="tools-list" role="list">
+                {tools.map((tool) => (
+                  <li key={tool} role="listitem">
+                    <button 
+                      type="button"
+                      className="glass-tag"
+                      aria-label={`Skill: ${tool}`}
+                    >
+                      {tool}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
