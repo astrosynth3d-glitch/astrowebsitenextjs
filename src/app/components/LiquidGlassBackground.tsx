@@ -160,7 +160,7 @@ export default function LiquidGlassBackground() {
 
     const drawGlassOrb = (
       ctx: CanvasRenderingContext2D, x: number, y: number, radius: number,
-      hue: number, opacity: number, time: number, scrollBoost: number
+      hue: number, opacity: number, scrollBoost: number
     ) => {
       const profile = deviceProfileRef.current;
       const finalRadius = radius * (1 + scrollBoost * 0.2);
@@ -352,7 +352,7 @@ export default function LiquidGlassBackground() {
           p.vy *= 0.94;
 
           const driftingHue = p.hue + Math.sin(time * 0.1 + p.phase) * 20;
-          drawGlassOrb(ctx, p.x, p.y, currentRadius, driftingHue, p.opacity, time, scrollBoost);
+          drawGlassOrb(ctx, p.x, p.y, currentRadius, driftingHue, p.opacity, scrollBoost);
         }
       }
 

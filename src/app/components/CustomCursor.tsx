@@ -16,6 +16,7 @@ const MAIN_SPRING = { stiffness: 500, damping: 28, mass: 0.5 };
 const TRAIL_SPRING = { stiffness: 180, damping: 22, mass: 1.2 };
 const VELOCITY_RANGE: number[] = [-2800, 0, 2800];
 const EASE_OUT_CUBIC: Easing = [0, 0, 0.58, 1];
+const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, select, label, [data-cursor='hover'], .interactive-cursor";
 
 export default function CustomCursor() {
   const [mounted, setMounted] = useState(false);
@@ -39,10 +40,6 @@ export default function CustomCursor() {
   const trailX = useSpring(cursorX, TRAIL_SPRING);
   const trailY = useSpring(cursorY, TRAIL_SPRING);
 
-  const interactiveSelectorRef = useRef(
-    "a, button, [role='button'], input, textarea, select, label, [data-cursor='hover'], .interactive-cursor"
-  );
-  const mediaQueryRef = useRef<MediaQueryList | null>(null);
   const rafRef = useRef<number | null>(null);
   const currentTargetRef = useRef<Element | null>(null);
 
@@ -60,7 +57,6 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!mounted) return;
     const mql = window.matchMedia("(max-width: 1024px), (hover: none), (pointer: coarse)");
-    mediaQueryRef.current = mql;
     mql.addEventListener("change", handleMobileChange);
     return () => mql.removeEventListener("change", handleMobileChange);
   }, [mounted, handleMobileChange]);
@@ -78,7 +74,7 @@ export default function CustomCursor() {
 
     const onPointerOver = (e: PointerEvent) => {
       const target = e.target as HTMLElement;
-      const interactive = target.closest(interactiveSelectorRef.current);
+      const interactive = target.closest(INTERACTIVE_SELECTOR);
       if (interactive) {
         currentTargetRef.current = interactive;
         setCursorState("hover");
@@ -90,8 +86,8 @@ export default function CustomCursor() {
       const related = e.relatedTarget as HTMLElement;
       if (
         currentTargetRef.current &&
-        !target.closest(interactiveSelectorRef.current) &&
-        (!related || !related.closest(interactiveSelectorRef.current))
+        !target.closest(INTERACTIVE_SELECTOR) &&
+        (!related || !related.closest(INTERACTIVE_SELECTOR))
       ) {
         currentTargetRef.current = null;
         setCursorState("default");
